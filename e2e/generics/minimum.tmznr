@@ -1,0 +1,24 @@
+import std.fmt;
+import std.io;
+
+type Integer constraint {
+    Int | UInt16
+}
+
+function min_value<T>(a: T, b: T): T
+where T: Integer {
+    if (a < b) {
+        return a;
+    }
+    return b;
+}
+
+function main() {
+    out := io.stdout();
+    fmt.write(to: out, format: "{}\n", value: min_value<Int>(a: -4, b: 2));
+    fmt.write(to: out, format: "{}\n", value: min_value<UInt16>(a: 1024, b: 512));
+}
+
+// Output:
+// -4
+// 512

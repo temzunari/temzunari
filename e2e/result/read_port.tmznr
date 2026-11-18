@@ -1,0 +1,35 @@
+import std.fmt;
+import std.io;
+import std.result;
+
+type ReadError enum {
+    ShortInput
+}
+
+function read_port(data: []const Byte): result.Result<UInt16, ReadError> {
+    if (len(value: data) < 2) {
+        return result.Err(error: ShortInput);
+    }
+    port := (UInt16(value: data[0]) << 8) | UInt16(value: data[1]);
+    return result.Ok(value: port);
+}
+
+function report(out: io.Writer, port: result.Result<UInt16, ReadError>) {
+    switch (port) {
+    case result.Ok(value: port_number):
+        fmt.write(to: out, format: "{}\n", value: port_number);
+    case result.Err(error: ShortInput):
+        fmt.write(to: out, format: "{}\n", value: "short input");
+    }
+}
+
+function main() {
+    out := io.stdout();
+    data := [2]Byte{0x01, 0xbb};
+    report(out: out, port: read_port(data: data[:]));
+    report(out: out, port: read_port(data: data[:1]));
+}
+
+// Output:
+// 443
+// short input

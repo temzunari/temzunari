@@ -1,0 +1,20 @@
+import std.fmt;
+import std.io;
+
+function sum_odd(limit: Int): Int {
+    sum := 0;
+    for (n := 1; n <= limit; n++) {
+        if (n % 2 == 1) {
+            sum += n;
+        }
+    }
+    return sum;
+}
+
+function main() {
+    out := io.stdout();
+    fmt.write(to: out, format: "{}\n", value: sum_odd(limit: 6));
+}
+
+// Output:
+// 9

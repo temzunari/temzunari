@@ -1,0 +1,35 @@
+import std.fmt;
+import std.io;
+import std.iter;
+import std.option;
+
+function find_byte(data: []const Byte, target: Byte): option.Option<Int> {
+    return iter.range(start: 0, end: len(value: data))
+        .find(predicate: function (i: Int): Bool {
+            return data[i] == target;
+        });
+}
+
+function report(out: io.Writer, position: option.Option<Int>) {
+    switch (position) {
+    case option.Some(value: i):
+        fmt.write(to: out, format: "{}\n", value: i);
+    case option.None:
+        fmt.write(to: out, format: "{}\n", value: "missing");
+    }
+}
+
+function main() {
+    out := io.stdout();
+    data := [3]Byte{0x00, 0xff, 0xff};
+    report(out: out, position: find_byte(data: data[:], target: 0x00));
+    report(out: out, position: find_byte(data: data[:], target: 0xff));
+    report(out: out, position: find_byte(data: data[:], target: 0x7f));
+    report(out: out, position: find_byte(data: data[:0], target: 0x00));
+}
+
+// Output:
+// 0
+// 1
+// missing
+// missing

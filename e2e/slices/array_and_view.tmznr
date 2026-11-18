@@ -1,0 +1,19 @@
+import std.fmt;
+import std.io;
+
+function main() {
+    out := io.stdout();
+    bytes := [4]Byte{10, 20, 30, 40};
+    snapshot := bytes;
+    var middle: []const Byte = bytes[1:3];
+
+    bytes[1] = 99;
+    fmt.write(to: out, format: "{}\n", value: snapshot[1]);
+    fmt.write(to: out, format: "{}\n", value: middle[0]);
+    fmt.write(to: out, format: "{}\n", value: len(value: middle));
+}
+
+// Output:
+// 20
+// 99
+// 2

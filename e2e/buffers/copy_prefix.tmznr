@@ -1,0 +1,28 @@
+import std.fmt;
+import std.io;
+
+// The caller supplies the storage. Return the number of bytes written.
+function copy_prefix(dst: []Byte, src: []const Byte): Int {
+    n := 0;
+    for (n < len(value: dst) && n < len(value: src)) {
+        dst[n] = src[n];
+        n++;
+    }
+    return n;
+}
+
+function main() {
+    out := io.stdout();
+    var storage: [3]Byte;
+    src := [3]Byte{10, 20, 30};
+    fmt.write(to: out, format: "{}\n", value: copy_prefix(dst: storage[:2], src: src[:]));
+    fmt.write(to: out, format: "{}\n", value: storage[0]);
+    fmt.write(to: out, format: "{}\n", value: storage[1]);
+    fmt.write(to: out, format: "{}\n", value: storage[2]);
+}
+
+// Output:
+// 2
+// 10
+// 20
+// 0

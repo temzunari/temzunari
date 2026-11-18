@@ -1,0 +1,26 @@
+import std.fmt;
+import std.io;
+
+type Seek enum {
+    Start
+    Relative(delta: Int)
+}
+
+function offset(current: Int, seek: Seek): Int {
+    switch (seek) {
+    case Start:
+        return 0;
+    case Relative(delta: n):
+        return current + n;
+    }
+}
+
+function main() {
+    out := io.stdout();
+    fmt.write(to: out, format: "{}\n", value: offset(current: 12, seek: Start));
+    fmt.write(to: out, format: "{}\n", value: offset(current: 12, seek: Relative(delta: -4)));
+}
+
+// Output:
+// 0
+// 8
