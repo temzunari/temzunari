@@ -1,0 +1,33 @@
+import std.fmt;
+import std.io;
+import std.iter;
+
+function is_odd(value: Int): Bool {
+    return value % 2 != 0;
+}
+
+function square(value: Int): Int {
+    return value * value;
+}
+
+function add(total: Int, value: Int): Int {
+    return total + value;
+}
+
+function sum_odd_squares(data: []const Int): Int {
+    return iter.from_slice(data: data)
+        .filter(predicate: is_odd)
+        .map(transform: square)
+        .fold_left(initial: 0, combine: add);
+}
+
+function main() {
+    out := io.stdout();
+    values := [5]Int{-3, 2, 1, 4, 5};
+    fmt.write(to: out, format: "{}\n", value: sum_odd_squares(data: values[:]));
+    fmt.write(to: out, format: "{}\n", value: sum_odd_squares(data: values[:0]));
+}
+
+// Output:
+// 35
+// 0
