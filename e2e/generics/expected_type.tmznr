@@ -1,0 +1,23 @@
+import std.fmt;
+import std.io;
+import std.option;
+
+function empty<T>(): option.Option<T> {
+    return option.None;
+}
+
+function main() {
+    out := io.stdout();
+    // The declared result type supplies T even though empty takes no arguments.
+    var port: option.Option<UInt16> = empty();
+    // Rejected: unknown := empty(); there is no information to determine T here.
+    switch (port) {
+    case option.Some(value: n):
+        fmt.write(to: out, format: "{}\n", value: n);
+    case option.None:
+        fmt.write(to: out, format: "{}\n", value: "no port");
+    }
+}
+
+// Output:
+// no port

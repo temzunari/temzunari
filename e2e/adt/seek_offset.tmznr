@@ -3,13 +3,13 @@ import std.io;
 
 type Seek enum {
     Start
-    Relative(delta: Int)
+    Relative(delta: ISize)
 }
 
-function offset(current: Int, seek: Seek): Int {
+function offset(current: ISize, seek: Seek): ISize {
     switch (seek) {
     case Start:
-        return 0;
+        return 0isize;
     case Relative(delta: n):
         return current + n;
     }
@@ -17,8 +17,8 @@ function offset(current: Int, seek: Seek): Int {
 
 function main() {
     out := io.stdout();
-    fmt.write(to: out, format: "{}\n", value: offset(current: 12, seek: Start));
-    fmt.write(to: out, format: "{}\n", value: offset(current: 12, seek: Relative(delta: -4)));
+    fmt.write(to: out, format: "{}\n", value: offset(current: 12isize, seek: Start));
+    fmt.write(to: out, format: "{}\n", value: offset(current: 12isize, seek: Relative(delta: -4isize)));
 }
 
 // Output:

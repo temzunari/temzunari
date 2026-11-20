@@ -1,0 +1,62 @@
+import std.fmt;
+import std.io;
+import std.option;
+
+type Version struct {
+    major: UInt16
+    minor: UInt16
+}
+
+implement Ord for Version {
+    function compare(a: Version, b: Version): Ordering {
+        if (a.major < b.major) {
+            return Less;
+        }
+        if (a.major > b.major) {
+            return Greater;
+        }
+        return Ord.compare(a: a.minor, b: b.minor);
+    }
+}
+
+implement PartialOrd for Version {
+    function partial_compare(a: Version, b: Version): option.Option<Ordering> {
+        return option.Some(value: Ord.compare(a: a, b: b));
+    }
+}
+
+implement PartialEq for Version {
+    function eq(a: Version, b: Version): Bool {
+        return Ord.compare(a: a, b: b) == Equal;
+    }
+}
+
+implement Eq for Version {}
+
+function min_value<T>(a: T, b: T): T
+where T: Ord {
+    if (a < b) {
+        return a;
+    }
+    return b;
+}
+
+function main() {
+    out := io.stdout();
+    v1_9 := Version(major: 1u16, minor: 9u16);
+    v1_10 := Version(major: 1u16, minor: 10u16);
+    v2_0 := Version(major: 2u16, minor: 0u16);
+
+    first := min_value(a: v1_10, b: v1_9);
+    fmt.write(to: out, format: "{}\n", value: first.minor);
+    first_major := min_value(a: v1_10, b: v2_0);
+    fmt.write(to: out, format: "{}\n", value: first_major.major);
+    if (first == v1_9) {
+        fmt.write(to: out, format: "{}\n", value: "equal");
+    }
+}
+
+// Output:
+// 9
+// 1
+// equal
