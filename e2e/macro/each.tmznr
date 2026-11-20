@@ -1,0 +1,42 @@
+import std.fmt;
+import std.io;
+
+// A value argument is evaluated once at entry, even when the slice is empty.
+// The caller supplies the name that is bound in the trailing block.
+macro each<T>($data: value<[]const T>) |$item: binder| $body: block binds($item) {
+    return quote {
+        for (i := 0usize; i < len(value: $data); i++) {
+            $item := $data[i];
+            $body
+        }
+    };
+}
+
+function open_batch(out: io.Writer, data: []const Int32): []const Int32 {
+    fmt.write(to: out, format: "{}\n", value: "open");
+    return data;
+}
+
+function main() {
+    out := io.stdout();
+    data := [3usize]Int32{10i32, 20i32, 30i32};
+    i := 0i32;
+
+    each!(data: open_batch(out: out, data: data[:])) |item| {
+        // This i belongs to main. The macro has its own loop index.
+        i += item;
+        fmt.write(to: out, format: "{}\n", value: item);
+    }
+    each!(data: open_batch(out: out, data: data[:0usize])) |item| {
+        fmt.write(to: out, format: "{}\n", value: item);
+    }
+    fmt.write(to: out, format: "{}\n", value: i);
+}
+
+// Output:
+// open
+// 10
+// 20
+// 30
+// open
+// 60

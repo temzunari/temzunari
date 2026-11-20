@@ -2,8 +2,8 @@ import std.fmt;
 import std.io;
 
 // The caller supplies the storage. Return the number of bytes written.
-function copy_prefix(dst: []Byte, src: []const Byte): Int {
-    n := 0;
+function copy_prefix(dst: []Byte, src: []const Byte): USize {
+    n := 0usize;
     for (n < len(value: dst) && n < len(value: src)) {
         dst[n] = src[n];
         n++;
@@ -13,12 +13,12 @@ function copy_prefix(dst: []Byte, src: []const Byte): Int {
 
 function main() {
     out := io.stdout();
-    var storage: [3]Byte;
-    src := [3]Byte{10, 20, 30};
-    fmt.write(to: out, format: "{}\n", value: copy_prefix(dst: storage[:2], src: src[:]));
-    fmt.write(to: out, format: "{}\n", value: storage[0]);
-    fmt.write(to: out, format: "{}\n", value: storage[1]);
-    fmt.write(to: out, format: "{}\n", value: storage[2]);
+    var storage: [3usize]Byte;
+    src := [3usize]Byte{10u8, 20u8, 30u8};
+    fmt.write(to: out, format: "{}\n", value: copy_prefix(dst: storage[:2usize], src: src[:]));
+    fmt.write(to: out, format: "{}\n", value: storage[0usize]);
+    fmt.write(to: out, format: "{}\n", value: storage[1usize]);
+    fmt.write(to: out, format: "{}\n", value: storage[2usize]);
 }
 
 // Output:

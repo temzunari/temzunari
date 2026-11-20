@@ -1,12 +1,8 @@
 import std.fmt;
 import std.io;
 
-type Integer constraint {
-    Int | UInt16
-}
-
 function min_value<T>(a: T, b: T): T
-where T: Integer {
+where T: Ord {
     if (a < b) {
         return a;
     }
@@ -15,10 +11,16 @@ where T: Integer {
 
 function main() {
     out := io.stdout();
-    fmt.write(to: out, format: "{}\n", value: min_value<Int>(a: -4, b: 2));
-    fmt.write(to: out, format: "{}\n", value: min_value<UInt16>(a: 1024, b: 512));
+    fmt.write(to: out, format: "{}\n", value: min_value<Int32>(a: -4i32, b: 2i32));
+    fmt.write(to: out, format: "{}\n", value: min_value(a: 1024u16, b: 512u16));
+
+    // Rejected: min_value<UInt16>(a: 443, b: 512); integer literals require suffixes.
+    // Rejected: min_value(a: 443u16, b: 512u32); the two arguments must have the same type.
+    port := 443u16;
+    fmt.write(to: out, format: "{}\n", value: min_value(a: UInt32(value: port), b: 512u32));
 }
 
 // Output:
 // -4
 // 512
+// 443

@@ -7,10 +7,11 @@ type ReadError enum {
 }
 
 function read_port(data: []const Byte): result.Result<UInt16, ReadError> {
-    if (len(value: data) < 2) {
+    // This guard returns ShortInput in every build mode.
+    if (len(value: data) < 2usize) {
         return result.Err(error: ShortInput);
     }
-    port := (UInt16(value: data[0]) << 8) | UInt16(value: data[1]);
+    port := (UInt16(value: data[0usize]) << 8u16) | UInt16(value: data[1usize]);
     return result.Ok(value: port);
 }
 
@@ -25,9 +26,12 @@ function report(out: io.Writer, port: result.Result<UInt16, ReadError>) {
 
 function main() {
     out := io.stdout();
-    data := [2]Byte{0x01, 0xbb};
+    data := [2usize]Byte{0x01u8, 0xbbu8};
     report(out: out, port: read_port(data: data[:]));
-    report(out: out, port: read_port(data: data[:1]));
+    report(out: out, port: read_port(data: data[:1usize]));
+    // For this one-byte view, reading index 1usize directly would trap in Debug
+    // and ReleaseSafe (the default release mode). In ReleaseFast it is unchecked
+    // and the behavior is undefined.
 }
 
 // Output:

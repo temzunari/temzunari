@@ -3,14 +3,14 @@ import std.io;
 import std.iter;
 import std.option;
 
-function find_byte(data: []const Byte, target: Byte): option.Option<Int> {
-    return iter.range(start: 0, end: len(value: data))
-        .find(predicate: function (i: Int): Bool {
+function find_byte(data: []const Byte, target: Byte): option.Option<USize> {
+    return iter.range(start: 0usize, end: len(value: data))
+        .find(predicate: function (i: USize): Bool {
             return data[i] == target;
         });
 }
 
-function report(out: io.Writer, position: option.Option<Int>) {
+function report(out: io.Writer, position: option.Option<USize>) {
     switch (position) {
     case option.Some(value: i):
         fmt.write(to: out, format: "{}\n", value: i);
@@ -21,11 +21,11 @@ function report(out: io.Writer, position: option.Option<Int>) {
 
 function main() {
     out := io.stdout();
-    data := [3]Byte{0x00, 0xff, 0xff};
-    report(out: out, position: find_byte(data: data[:], target: 0x00));
-    report(out: out, position: find_byte(data: data[:], target: 0xff));
-    report(out: out, position: find_byte(data: data[:], target: 0x7f));
-    report(out: out, position: find_byte(data: data[:0], target: 0x00));
+    data := [3usize]Byte{0x00u8, 0xffu8, 0xffu8};
+    report(out: out, position: find_byte(data: data[:], target: 0x00u8));
+    report(out: out, position: find_byte(data: data[:], target: 0xffu8));
+    report(out: out, position: find_byte(data: data[:], target: 0x7fu8));
+    report(out: out, position: find_byte(data: data[:0usize], target: 0x00u8));
 }
 
 // Output:

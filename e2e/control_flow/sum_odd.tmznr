@@ -1,10 +1,10 @@
 import std.fmt;
 import std.io;
 
-function sum_odd(limit: Int): Int {
-    sum := 0;
-    for (n := 1; n <= limit; n++) {
-        if (n % 2 == 1) {
+function sum_odd(limit: Int32): Int32 {
+    sum := 0i32;
+    for (n := 1i32; n <= limit; n++) {
+        if (n % 2i32 == 1i32) {
             sum += n;
         }
     }
@@ -13,7 +13,7 @@ function sum_odd(limit: Int): Int {
 
 function main() {
     out := io.stdout();
-    fmt.write(to: out, format: "{}\n", value: sum_odd(limit: 6));
+    fmt.write(to: out, format: "{}\n", value: sum_odd(limit: 6i32));
 }
 
 // Output:
